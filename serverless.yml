@@ -1,0 +1,70 @@
+service: erp
+frameworkVersion: "3"
+provider:
+  name: aws
+  runtime: nodejs18.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:PutItem"
+            - "dynamodb:Get*"
+            - "dynamodb:Scan*"
+            - "dynamodb:UpdateItem"
+            - "dynamodb:Query"
+            - "dynamodb:DeleteItem"
+          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/ErpDepTable
+  environment:
+    TABLE_NAME: { Ref: ErpDepTable }
+
+functions:
+  createDepartment:
+    handler: src/createDepartment.handler
+    events:
+      - httpApi:
+          path: /
+          method: post
+  getDepartmentByName:
+    handler: src/getDepartmentByName.handler
+    events:
+      - httpApi:
+          path: /{name}
+          method: get
+  getAllDepartments:
+    handler: src/getAllDepartments.handler
+    events:
+      - httpApi:
+          path: /
+          method: get
+  deleteDepartment:
+    handler: src/deleteDepartment.handler
+    events:
+      - httpApi:
+          path: /{name}
+          method: delete
+  updateDepartment:
+    handler: src/updateDepartment.handler
+    events:
+      - httpApi:
+          path: /{name}
+          method: put
+resources:
+  Resources:
+    ErpDepTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: "PK"
+            AttributeType: "S"
+          - AttributeName: "SK"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "PK"
+            KeyType: "HASH"
+          - AttributeName: "SK"
+            KeyType: "RANGE"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ErpDepTable
