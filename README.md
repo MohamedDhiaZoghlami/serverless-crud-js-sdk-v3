@@ -11,10 +11,9 @@ authorName: 'Serverless, inc.'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 -->
 
+# Basic Crud operations using Serverless Framework
 
-# Serverless Framework AWS NodeJS Example
-
-This template demonstrates how to deploy a NodeJS function running on AWS Lambda using the traditional Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).
+I have used nodejs, api gateway, lambda and dynamodb to make a simple crud of departments and ill be adding employees and the 'One to Many' relationship later on, for now it only has 'create department' , 'get department by name' , 'get all departments' , 'update department category' , 'delete department'
 
 ## Usage
 
@@ -26,47 +25,16 @@ In order to deploy the example, you need to run the following command:
 $ serverless deploy
 ```
 
-After running deploy, you should see output similar to:
+## Next steps
 
-```bash
-Deploying aws-node-project to stage dev (us-east-1)
+### Employee CRUD
 
-✔ Service deployed to stack aws-node-project-dev (112s)
+I will add employee crud operations with updating the department each time i add or delete an employee
 
-functions:
-  hello: aws-node-project-dev-hello (1.5 kB)
-```
+### ERD
 
-### Invocation
+I'll add the entity relationship diagram when i finish the whole project
 
-After successful deployment, you can invoke the deployed function by using the following command:
+### Access Patterns
 
-```bash
-serverless invoke --function hello
-```
-
-Which should result in response similar to the following:
-
-```json
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": {}\n}"
-}
-```
-
-### Local development
-
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function hello
-```
-
-Which should result in response similar to the following:
-
-```
-{
-    "statusCode": 200,
-    "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
-}
-```
+Every DynamoDB need access patterns to be optimized so ill add that later on
