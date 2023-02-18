@@ -67,6 +67,12 @@ functions:
       - httpApi:
           path: /employee
           method: get
+  getEmployeesByDepartment:
+    handler: src/employee/getEmployeesByDepartment.handler
+    events:
+      - httpApi:
+          path: department/{dep}/employee
+          method: get
   updateEmployee:
     handler: src/employee/updateEmployee.handler
     events:
