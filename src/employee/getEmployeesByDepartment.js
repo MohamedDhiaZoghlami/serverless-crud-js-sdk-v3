@@ -11,12 +11,13 @@ const makeResponse = (statusCode, body) => {
 export const handler = async (event) => {
   let response;
   const { dep } = event.pathParameters;
+  console.log(dep);
   const ddbClient = new DynamoDBClient();
   const params = {
     TableName: process.env.TABLE_NAME,
     KeyConditionExpression: "GSI1PK = :gsi1pk",
     ExpressionAttributeValues: {
-      ":gsi1pk": dep,
+      ":gsi1pk": `DEP#${dep}`,
     },
     ScanIndexForward: false,
   };
