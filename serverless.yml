@@ -14,7 +14,16 @@ provider:
             - "dynamodb:UpdateItem"
             - "dynamodb:Query"
             - "dynamodb:DeleteItem"
-          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/DepMangTable
+          Resource:
+            - Fn::GetAtt:
+                - DepMangTable
+                - Arn
+            - Fn::Join:
+                - "/"
+                - - Fn::GetAtt:
+                      - DepMangTable
+                      - Arn
+                  - "index/GSI1"
   environment:
     TABLE_NAME: { Ref: DepMangTable }
 
