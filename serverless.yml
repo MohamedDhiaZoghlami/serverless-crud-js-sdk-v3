@@ -56,7 +56,7 @@ functions:
           path: /employee
           method: post
   getEmployeeByName:
-    handler: src/employee/getEmployee.handler
+    handler: src/employee/getEmployeeByName.handler
     events:
       - httpApi:
           path: /employee/{name}
