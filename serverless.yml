@@ -71,7 +71,7 @@ functions:
     handler: src/employee/getEmployeesByDepartment.handler
     events:
       - httpApi:
-          path: /{dep}/employee
+          path: /employees/department/{dep}
           method: get
   updateEmployee:
     handler: src/employee/updateEmployee.handler
