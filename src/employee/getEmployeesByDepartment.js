@@ -15,6 +15,7 @@ export const handler = async (event) => {
   const ddbClient = new DynamoDBClient();
   const params = {
     TableName: process.env.TABLE_NAME,
+    IndexName: "GSI1",
     KeyConditionExpression: "GSI1PK = :gsi1pk",
     ExpressionAttributeValues: {
       ":gsi1pk": `DEP#${dep}`,
