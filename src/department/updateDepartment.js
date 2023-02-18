@@ -1,7 +1,15 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
+const makeResponse = (statusCode, body) => {
+  return {
+    statusCode: statusCode,
+    body: JSON.stringify(body),
+  };
+};
+
 export const handler = async (event) => {
+  let response;
   const { name } = event.pathParameters;
   console.log(name);
   const { category } = JSON.parse(event.body);
@@ -10,8 +18,8 @@ export const handler = async (event) => {
   const params = {
     TableName: process.env.TABLE_NAME,
     Key: {
-      PK: "COM",
-      SK: `COM#${name}`,
+      PK: "DEP",
+      SK: `DEP#${name}`,
     },
     UpdateExpression: "set category = :newcategory",
     ExpressionAttributeValues: {
@@ -22,17 +30,16 @@ export const handler = async (event) => {
   try {
     const data = await ddbClient.send(new UpdateCommand(params));
     console.log("Success", data);
-    a = data;
+    response = makeResponse(200, {
+      message: "Item Updated!",
+    });
   } catch (err) {
     console.log("Error", err.stack);
+    response = makeResponse(200, {
+      message: "update item failed!",
+      error: err.stack,
+    });
   }
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: "item updated",
-      info: a,
-    }),
-  };
 
   return response;
 };

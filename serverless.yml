@@ -1,4 +1,4 @@
-service: erp
+service: erps
 frameworkVersion: "3"
 provider:
   name: aws
@@ -14,44 +14,50 @@ provider:
             - "dynamodb:UpdateItem"
             - "dynamodb:Query"
             - "dynamodb:DeleteItem"
-          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/ErpDepTable
+          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/DepMangTable
   environment:
-    TABLE_NAME: { Ref: ErpDepTable }
+    TABLE_NAME: { Ref: DepMangTable }
 
 functions:
   createDepartment:
-    handler: src/createDepartment.handler
+    handler: src/department/createDepartment.handler
     events:
       - httpApi:
           path: /
           method: post
   getDepartmentByName:
-    handler: src/getDepartmentByName.handler
+    handler: src/department/getDepartmentByName.handler
     events:
       - httpApi:
           path: /{name}
           method: get
   getAllDepartments:
-    handler: src/getAllDepartments.handler
+    handler: src/department/getAllDepartments.handler
     events:
       - httpApi:
           path: /
           method: get
   deleteDepartment:
-    handler: src/deleteDepartment.handler
+    handler: src/department/deleteDepartment.handler
     events:
       - httpApi:
           path: /{name}
           method: delete
   updateDepartment:
-    handler: src/updateDepartment.handler
+    handler: src/department/updateDepartment.handler
     events:
       - httpApi:
           path: /{name}
           method: put
+  createEmployee:
+    handler: src/employee/createEmployee.handler
+    events:
+      - httpApi:
+          path: /employee
+          method: post
 resources:
   Resources:
-    ErpDepTable:
+    DepMangTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
         AttributeDefinitions:
@@ -59,12 +65,19 @@ resources:
             AttributeType: "S"
           - AttributeName: "SK"
             AttributeType: "S"
+          - AttributeName: "GSI1PK"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "PK"
             KeyType: "HASH"
           - AttributeName: "SK"
             KeyType: "RANGE"
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ErpDepTable
+        BillingMode: "PAY_PER_REQUEST"
+        GlobalSecondaryIndexes:
+          - IndexName: "GSI1"
+            KeySchema:
+              - AttributeName: "GSI1PK"
+                KeyType: "HASH"
+            Projection:
+              ProjectionType: ALL
+        TableName: DepMangTable
