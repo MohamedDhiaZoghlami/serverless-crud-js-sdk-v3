@@ -55,6 +55,18 @@ functions:
       - httpApi:
           path: /employee
           method: post
+  updateEmployee:
+    handler: src/employee/updateEmployee.handler
+    events:
+      - httpApi:
+          path: /employee/{name}
+          method: put
+  deleteEmployee:
+    handler: src/employee/deleteEmployee.handler
+    events:
+      - httpApi:
+          path: /{department}/employee/{name}
+          method: delete
 resources:
   Resources:
     DepMangTable:
